@@ -1,11 +1,12 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
 
+// Standard initialization using the environment-injected API key
 const getAI = () => new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 /**
- * Standard Chat using Gemini 3 Pro for complex reasoning.
- * Uses thinkingConfig for higher quality responses.
+ * Standard Chat using Gemini 3 Pro for deep reasoning.
+ * Optimized for complex travel and safety logic.
  */
 export const chatWithPro = async (message: string, history: any[] = []) => {
   const ai = getAI();
@@ -17,7 +18,7 @@ export const chatWithPro = async (message: string, history: any[] = []) => {
     ],
     config: {
       systemInstruction: 'You are the Bharat Yatra Pro Assistant. You provide deep, complex insights into Indian culture, travel planning, and legal/safety advice. Use your reasoning capabilities to provide highly detailed and accurate responses.',
-      thinkingConfig: { thinkingBudget: 16384 }
+      thinkingConfig: { thinkingBudget: 32768 } // Max budget for pro model reasoning
     },
   });
   return { text: response.text };
@@ -25,7 +26,7 @@ export const chatWithPro = async (message: string, history: any[] = []) => {
 
 /**
  * Search Grounded Chat using Gemini 3 Flash.
- * Optimized for real-time safety alerts and travel advisories.
+ * Essential for real-time safety updates.
  */
 export const chatWithSearch = async (message: string) => {
   const ai = getAI();
@@ -34,7 +35,7 @@ export const chatWithSearch = async (message: string) => {
     contents: [{ role: 'user', parts: [{ text: message }] }],
     config: {
       tools: [{ googleSearch: {} }],
-      systemInstruction: 'You are the Bharat Yatra Real-Time Safety & Advisories Assistant. Your absolute priority is the safety and well-being of tourists in India. Use Google Search to find and prioritize critical real-time information, including safety alerts, weather warnings, natural disaster updates, and official travel advisories. Always provide actionable advice and cite your sources.',
+      systemInstruction: 'You are the Bharat Yatra Real-Time Safety Assistant. Your priority is user safety. Use Google Search to find critical real-time info (weather, safety, news) and cite sources.',
     },
   });
 
@@ -71,11 +72,11 @@ export const chatWithMaps = async (message: string, lat?: number, lng?: number) 
 };
 
 /**
- * Landmark Analysis using Pro for high-quality identification.
+ * Landmark Analysis using Vision capabilities.
  */
 export const analyzeLandmark = async (base64Image: string) => {
   const ai = getAI();
-  const prompt = "Identify this monument or landmark in India. Provide its name, a short description, 3 historical facts, and 2 safety tips. Return JSON with: name, description, historicalFacts (array), safetyTips (array).";
+  const prompt = "Identify this monument or landmark in India. Provide name, description, 3 history facts, 2 safety tips. Return JSON.";
 
   const response = await ai.models.generateContent({
     model: 'gemini-3-pro-preview',
