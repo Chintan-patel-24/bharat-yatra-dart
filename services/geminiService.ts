@@ -6,6 +6,7 @@ const getAI = () => new GoogleGenAI({ apiKey: process.env.API_KEY });
 const BHARAT_YATRA_SYSTEM_INSTRUCTION = `
 You are an AI assistant used in a web application named "Bharat Yatra".
 Purpose: Provide accurate, practical, and real-world travel guidance related to India.
+
 Scope:
 - Tourist destinations across India
 - Travel routes, distances, and transport options
@@ -18,9 +19,11 @@ Rules:
 2. Keep answers clear and concise.
 3. If information is uncertain, say so.
 4. Avoid marketing language.
-5. NO EMOJIS.
+5. ABSOLUTELY NO EMOJIS in your response.
 6. Assume users are Indian travelers unless specified otherwise.
-If a question is unrelated to Indian travel or tourism, politely redirect the user.
+
+Tone: Professional, helpful, and grounded in reality.
+If a question is unrelated to Indian travel or tourism, politely redirect the user back to travel topics.
 `;
 
 export const chatWithPro = async (message: string, history: any[] = []) => {
@@ -33,7 +36,7 @@ export const chatWithPro = async (message: string, history: any[] = []) => {
     ],
     config: {
       systemInstruction: BHARAT_YATRA_SYSTEM_INSTRUCTION,
-      thinkingConfig: { thinkingBudget: 0 } // Faster responses for general chat
+      thinkingConfig: { thinkingBudget: 0 } 
     },
   });
   return { text: response.text };
@@ -82,7 +85,7 @@ export const chatWithMaps = async (message: string, lat?: number, lng?: number) 
 
 export const analyzeLandmark = async (base64Image: string) => {
   const ai = getAI();
-  const prompt = "Identify this Indian monument. Return JSON with name, description, historicalFacts, and safetyTips. NO EMOJIS in description.";
+  const prompt = "Identify this Indian monument. Return JSON with name, description, historicalFacts, and safetyTips. NO EMOJIS.";
 
   const response = await ai.models.generateContent({
     model: 'gemini-3-pro-preview',
