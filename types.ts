@@ -7,7 +7,8 @@ export enum AppView {
   VISION = 'vision',
   WALKIE_TALKIE = 'walkie-talkie',
   SETTINGS = 'settings',
-  GALLERY = 'gallery'
+  GALLERY = 'gallery',
+  RADAR = 'radar'
 }
 
 export interface User {

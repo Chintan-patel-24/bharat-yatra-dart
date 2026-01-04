@@ -14,7 +14,10 @@ import {
   AlertTriangle,
   CircleUser,
   LayoutDashboard,
-  Image as ImageIcon
+  Image as ImageIcon,
+  Radar,
+  Moon,
+  Sun
 } from 'lucide-react';
 import { AppView } from './types';
 import Dashboard from './components/Dashboard';
@@ -26,6 +29,7 @@ import WalkieTalkie from './components/WalkieTalkie';
 import SOSOverlay from './components/SOSOverlay';
 import Settings from './components/Settings';
 import Gallery from './components/Gallery';
+import GeoRadar from './components/GeoRadar';
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<AppView>(AppView.DASHBOARD);
@@ -43,7 +47,6 @@ const App: React.FC = () => {
     }
   }, []);
 
-  // Sync dark mode class with document
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
@@ -54,12 +57,13 @@ const App: React.FC = () => {
 
   const primaryNav = [
     { id: AppView.DASHBOARD, label: 'Dashboard', icon: LayoutDashboard },
-    { id: AppView.IDENTITY, label: 'Verified', icon: User },
+    { id: AppView.IDENTITY, label: 'Verified ID', icon: User },
     { id: AppView.WALKIE_TALKIE, label: 'Walkie-Talkie', icon: Radio },
-    { id: AppView.CHATBOT, label: 'AI Chat', icon: MessageSquare },
+    { id: AppView.CHATBOT, label: 'AI Assistant', icon: MessageSquare },
   ];
 
   const overflowNav = [
+    { id: AppView.RADAR, label: 'Geo-Radar', icon: Radar },
     { id: AppView.GALLERY, label: 'Gallery', icon: ImageIcon },
     { id: AppView.GROUPS, label: 'Groups', icon: Users },
     { id: AppView.VISION, label: 'Vision AI', icon: Camera },
@@ -76,14 +80,15 @@ const App: React.FC = () => {
       case AppView.WALKIE_TALKIE: return <WalkieTalkie />;
       case AppView.SETTINGS: return <Settings isDarkMode={isDarkMode} toggleDarkMode={() => setIsDarkMode(!isDarkMode)} />;
       case AppView.GALLERY: return <Gallery />;
+      case AppView.RADAR: return <GeoRadar />;
       default: return <Dashboard setView={setCurrentView} />;
     }
   };
 
   return (
-    <div className={`flex h-screen overflow-hidden font-sans transition-colors duration-300 ${isDarkMode ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-900'}`}>
+    <div className={`flex h-screen overflow-hidden font-sans transition-colors duration-500 ${isDarkMode ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-900'}`}>
       {/* PERSISTENT SIDEBAR - Desktop */}
-      <aside className={`hidden lg:flex flex-col w-72 border-r z-30 shadow-sm shrink-0 transition-colors ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
+      <aside className={`hidden lg:flex flex-col w-72 border-r z-30 shadow-sm shrink-0 transition-all ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
         <div className="p-8 flex items-center gap-3">
           <div className="bg-orange-500 p-2.5 rounded-xl shadow-lg shadow-orange-100 dark:shadow-none">
             <Shield className="w-6 h-6 text-white" />
@@ -138,7 +143,7 @@ const App: React.FC = () => {
 
       {/* Main Container */}
       <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
-        <header className={`sticky top-0 z-20 flex items-center justify-between px-6 lg:px-10 py-5 border-b shrink-0 transition-colors ${isDarkMode ? 'bg-slate-900/80 border-slate-800 backdrop-blur-md' : 'bg-white border-slate-100 shadow-sm'}`}>
+        <header className={`sticky top-0 z-20 flex items-center justify-between px-6 lg:px-10 py-5 border-b shrink-0 transition-all ${isDarkMode ? 'bg-slate-900/80 border-slate-800 backdrop-blur-md' : 'bg-white border-slate-100 shadow-sm'}`}>
           <div className="flex items-center gap-3">
             <Shield className="w-7 h-7 text-orange-600 lg:hidden" />
             <h2 className={`text-xl font-bold capitalize tracking-tight ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>
@@ -146,17 +151,25 @@ const App: React.FC = () => {
             </h2>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
+            {/* Theme Toggle - Positioned to the left of the Menu */}
+            <button 
+              onClick={() => setIsDarkMode(!isDarkMode)} 
+              className={`p-3 rounded-2xl transition-all active:scale-90 ${isDarkMode ? 'bg-slate-800 text-yellow-400 hover:bg-slate-700' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 shadow-sm'}`}
+            >
+              {isDarkMode ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
+            </button>
+
             <button 
               onClick={() => setIsMenuOpen(true)} 
-              className={`p-3 rounded-2xl transition-colors active:scale-90 ${isDarkMode ? 'bg-slate-800 text-slate-400 hover:bg-slate-700' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 shadow-sm'}`}
+              className={`p-3 rounded-2xl transition-all active:scale-90 ${isDarkMode ? 'bg-slate-800 text-slate-400 hover:bg-slate-700' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 shadow-sm'}`}
             >
               <Menu className="w-6 h-6" />
             </button>
           </div>
         </header>
 
-        <main className={`flex-1 overflow-y-auto p-4 lg:p-10 relative scroll-smooth transition-colors ${isDarkMode ? 'bg-slate-950' : 'bg-slate-50'}`}>
+        <main className={`flex-1 overflow-y-auto p-4 lg:p-10 relative scroll-smooth transition-all ${isDarkMode ? 'bg-slate-950' : 'bg-slate-50'}`}>
           <div className="max-w-7xl mx-auto pb-32 lg:pb-0">
             {renderView()}
           </div>
@@ -206,10 +219,10 @@ const App: React.FC = () => {
       {/* OVERFLOW MENU DRAWER */}
       {isMenuOpen && (
         <div className="fixed inset-0 z-[60] bg-slate-900/60 backdrop-blur-md flex justify-end" onClick={() => setIsMenuOpen(false)}>
-          <div className={`w-80 h-full shadow-2xl p-8 flex flex-col transition-colors ${isDarkMode ? 'bg-slate-900' : 'bg-white'}`} onClick={e => e.stopPropagation()}>
+          <div className={`w-80 h-full shadow-2xl p-8 flex flex-col transition-all ${isDarkMode ? 'bg-slate-900' : 'bg-white'}`} onClick={e => e.stopPropagation()}>
             <div className="flex justify-between items-center mb-10">
               <span className={`font-black text-lg tracking-tight ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>OPTIONS</span>
-              <button onClick={() => setIsMenuOpen(false)} className={`p-2.5 rounded-full text-slate-400 transition-colors ${isDarkMode ? 'hover:bg-slate-800' : 'hover:bg-slate-50'}`}>
+              <button onClick={() => setIsMenuOpen(false)} className={`p-2.5 rounded-full text-slate-400 transition-all ${isDarkMode ? 'hover:bg-slate-800' : 'hover:bg-slate-50'}`}>
                 <X className="w-6 h-6" />
               </button>
             </div>
