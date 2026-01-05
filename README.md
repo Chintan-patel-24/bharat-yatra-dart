@@ -10,6 +10,9 @@ Smart tourist Safety Monitoring & Incident Response System using Ai, Gro-Fensing
 - ## Live Demo : [Tap to view](https://bharat-yatra-dart.vercel.app/)
 
  - <h3>open on a mobile for a batter experience.</h3>
+
+ <div >
+ <img align="right" src="images/qr.jpg" alt="QR code" width="200" height="200">
  <pre>
  X          
  X          
@@ -20,6 +23,8 @@ Smart tourist Safety Monitoring & Incident Response System using Ai, Gro-Fensing
          X X 
          X   
 </pre>
+
+</div>
 
 ---
 
