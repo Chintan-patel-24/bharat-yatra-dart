@@ -81,4 +81,6 @@ Bharat Yatra – Smart Tourist Safety & Monitoring App
 
 12. Conclusion -> The Bharat Yatra Smart Tourist Safety & Monitoring App is not just a mobile application but an ecosystem built to ensure safe, verified, and intelligent travel in India. By combining blockchain identity, real-time AI, group management, SOS safety, and government-backed trust, it aims to become the future of digital tourism — where every traveler feels secure, connected, and empowered.
 
+yet, it's a vibe coded ui project for the prototype demo !!
+
 ---
